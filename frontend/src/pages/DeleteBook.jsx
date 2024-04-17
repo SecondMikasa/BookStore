@@ -3,24 +3,25 @@ import { useParams, useNavigate } from 'react-router-dom'
 import { BackButton, Loader } from '../components'
 import axios from 'axios'
 import { Button } from 'antd'
+import { useSnackbar } from 'notistack'
 
 function DeleteBook() {
   const [loading, setLoading] = useState(true)
   const navigate = useNavigate()
-
+  const { enqueueSnackbar } = useSnackbar()
   const { id } = useParams()
 
   const handleSubmit = () => {
     axios
       .delete(`http://localhost:3500/books/${id}`)
       .then(() => {
-        alert("The book available in store has been deleted successfully")
+        enqueueSnackbar("The book available in store has been deleted successfully", {variant: 'success'})
         setLoading(false)
         navigate('/')
       })
       .catch((err) => {
         setLoading(false)
-        alert('An error occured. Please check console for further details')
+        enqueueSnackbar('An error occured. Please check console for further details', {variant: 'error'})
         return
       })
   }

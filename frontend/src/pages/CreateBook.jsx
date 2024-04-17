@@ -22,7 +22,7 @@ function CreateBook() {
 
   const handleSubmit = () => {
     if (!title || !author || !publishYear) {
-      alert("Please Input all the neccessary detials to continue")
+      enqueueSnackbar("Please Input all the neccessary detials to continue", {variant: 'warning'})
       return
     }
     axios

@@ -3,6 +3,8 @@ import { useParams, useNavigate } from 'react-router-dom'
 import axios from 'axios'
 import { Loader, BackButton } from '../components'
 import { Button } from 'antd'
+import { useSnackbar } from 'notistack'
+
 
 function EditBook() {
   const [title, setTitle] = useState('');
@@ -11,7 +13,7 @@ function EditBook() {
   const [loading, setLoading] = useState(true)
 
   const { id } = useParams()
-
+  const { enqueueSnackbar } = useSnackbar()
   const navigate = useNavigate()
 
   const newBook = {
@@ -34,19 +36,19 @@ function EditBook() {
 
   const handleSubmit = () => {
     if (!title || !author || !publishYear) {
-      alert("Please Input all the neccessary detials to continue")
+      enqueueSnackbar("Please Input all the neccessary detials to continue", {variant: 'warning'})
       return
     }
     axios
       .put(`http://localhost:3500/books/${id}`, newBook)
       .then(() => {
-        alert("The book available in store has been updated successfully")
+        enqueueSnackbar("The book available in store has been updated successfully", {variant: 'success'})
         setLoading(false)
         navigate('/')
       })
       .catch((err) => {
         setLoading(false)
-        alert('An error occured. Please check console for further details')
+        enqueueSnackbar('An error occured. Please check console for further details', {variant: 'error'})
         return
       })
   }

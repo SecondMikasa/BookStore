@@ -5,11 +5,14 @@ import { Link } from 'react-router-dom'
 import { BooksTable, BooksCard } from './index'
 import { Button } from "antd";
 import { MdOutlineAddBox } from 'react-icons/md'
+import { useSnackbar } from 'notistack'
 
 const Home = () => {
     const [books, setBooks] = useState([])
     const [loading, setLoading] = useState(true)
     const [showType, setShowType] = useState('table')
+
+    const { enqueueSnackbar } = useSnackbar()
 
     useEffect(() => {
         axios.get('http://localhost:3500/books')
@@ -18,7 +21,8 @@ const Home = () => {
                 setLoading(false)
             })
             .catch((err) => {
-                console.log(err)
+                console.log(err.message)
+                enqueueSnackbar("Some unprecedented error occured. Please try again later", {variant: 'error'})
                 setLoading(false)
             })
     })
